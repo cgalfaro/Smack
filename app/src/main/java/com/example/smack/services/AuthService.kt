@@ -8,9 +8,14 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.smack.utilities.URL_LOGIN
 import com.example.smack.utilities.URL_REGISTER
+import org.json.JSONException
 import org.json.JSONObject
 
 object AuthService {
+
+    var isLoggedIn = false
+    var userEmail = ""
+    var authToken = ""
 
     fun registerUser(context: Context, email: String, password: String, complete: (Boolean) -> Unit) {
 
@@ -45,8 +50,17 @@ object AuthService {
         val requestBody = jsonBody.toString()
 
         val loginRequest = object: JsonObjectRequest(Method.POST, URL_LOGIN, null, Response.Listener { response ->
-            //This is where we parse the json object
-            println(response)
+
+            try {
+                userEmail = response.getString("user")
+                authToken = response.getString("token")
+                isLoggedIn = true
+                complete(true)
+            } catch (e: JSONException) {
+                Log.d("JSON", "EXC:" + e.localizedMessage)
+                complete(false)
+            }
+
         }, Response.ErrorListener {error ->
             //this is where we deal with errors
             Log.d("ERROR", "Could not register user: $error")
