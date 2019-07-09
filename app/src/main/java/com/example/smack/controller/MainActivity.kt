@@ -21,9 +21,13 @@ import com.example.smack.R
 import com.example.smack.services.AuthService
 import com.example.smack.services.UserDataService
 import com.example.smack.utilities.BROADCAST_USER_DATA_CHANGE
+import com.example.smack.utilities.SOCKET_URL
+import io.socket.client.IO
 import kotlinx.android.synthetic.main.nav_header_main.*
 
 class MainActivity : AppCompatActivity() {
+
+    val socket = IO.socket(SOCKET_URL)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,11 +46,27 @@ class MainActivity : AppCompatActivity() {
         )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
-        hideKeyboard()
 
+
+
+
+    }
+
+    override fun onResume() {
         LocalBroadcastManager.getInstance(this).registerReceiver(userDataChangeReceiver,
             IntentFilter(BROADCAST_USER_DATA_CHANGE))
+        socket.connect()
+        super.onResume()
+    }
 
+    override fun onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(userDataChangeReceiver)
+        super.onPause()
+    }
+
+    override fun onDestroy() {
+        socket.disconnect()
+        super.onDestroy()
     }
 
     private val userDataChangeReceiver = object: BroadcastReceiver() {
@@ -101,19 +121,19 @@ class MainActivity : AppCompatActivity() {
                     val channelDesc = descTextId.text.toString()
 
                     // Create channel with the channelName and channelDesc
-                    hideKeyboard()
+                    socket.emit("newChannel", channelName, channelDesc)
 
                 }
                 .setNegativeButton("Cancel") { dialogInterface, i ->
                     //Cancel and close the dialog
-                    hideKeyboard()
+
                 }
                 .show()
         }
     }
 
     fun sendMsgBtnClicked(view: View) {
-
+        hideKeyboard()
     }
 
     fun hideKeyboard() {
