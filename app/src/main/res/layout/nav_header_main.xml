@@ -27,7 +27,7 @@
             android:id="@+id/userNameNavHeader"
             tools:text="Username"
             app:layout_constraintStart_toEndOf="@+id/userImageNavHeader" android:layout_marginStart="8dp"
-            app:layout_constraintTop_toTopOf="@+id/userImageNavHeader" android:text="Username"/>
+            app:layout_constraintTop_toTopOf="@+id/userImageNavHeader"/>
 
     <TextView
             android:layout_width="wrap_content"
@@ -35,7 +35,7 @@
             android:id="@+id/userEmailNavHeader"
             tools:text="user@email.com"
             app:layout_constraintStart_toEndOf="@+id/userImageNavHeader" android:layout_marginStart="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/userNameNavHeader" android:text="Uuser@email.com"/>
+            app:layout_constraintTop_toBottomOf="@+id/userNameNavHeader"/>
     <Button
             android:text="Log in"
             android:layout_width="wrap_content"
