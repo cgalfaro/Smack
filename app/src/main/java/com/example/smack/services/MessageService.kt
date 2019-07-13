@@ -73,7 +73,7 @@ object MessageService {
                     val userAvatarColor = message.getString("userAvatarColor")
                     val timeStamp = message.getString("timeStamp")
 
-                    val newMessage = Message(messageBody, channelId, userName, userAvatar, userAvatarColor, id, timeStamp)
+                    val newMessage = Message(messageBody, userName, channelId, userAvatar, userAvatarColor, id, timeStamp)
                     this.messages.add(newMessage)
                 }
                 complete(true)
